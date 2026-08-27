@@ -23,8 +23,9 @@
       loadSidebar: true,
       auto2top: true,
       themeColor: '#4a6cf7',
-      // 相对路径：支持部署在任意子路径（gh-pages / 子目录 / 各平台）
-      relativePath: true,
+      // 相对路径：false = 侧栏/正文里的相对链接始终基于站点根解析
+      // （设为 true 会导致从子目录页再点链接时路径叠加，例如 ziyuan/ziyuan/...）
+      relativePath: false,
       // 搜索
       search: {
         placeholder: '🔍 搜索导航链接…',
