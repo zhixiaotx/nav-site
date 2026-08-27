@@ -5,11 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# 需要的权限：写仓库（推 gh-pages 分支）+ 配置 Pages + 管理仓库（修改 Pages 源）
+# 需要的权限：写仓库（推 gh-pages 分支）+ 配置 Pages + OIDC
 permissions:
   contents: write
   pages: write
-  administration: write
   id-token: write
 
 # 同一时间只跑一个部署
