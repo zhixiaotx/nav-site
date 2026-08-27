@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 需要的权限：写仓库（推 gh-pages 分支）+ 配置 Pages + 管理仓库（修改 Pages 源）
+permissions:
+  contents: write
+  pages: write
+  administration: write
+  id-token: write
+
+# 同一时间只跑一个部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # docsify 是纯静态站点，无构建步骤。
+      # 站点内容在 doc/ 目录：打包 doc/ 推送到 gh-pages 分支后部署该分支。
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          commit_message: 'deploy: 自动部署 gh-pages ${{ github.sha }}'
+
+      # 配置 GitHub Pages：从 gh-pages 分支部署（legacy 模式）。
+      # 首次需仓库已开启 Pages；若未开启会自动失败并回退到手动开启。
+      - name: Configure GitHub Pages source
+        run: |
+          gh api repos/${{ github.repository }}/pages \
+            -X PUT \
+            -f build_type=legacy \
+            -f source[branch]=gh-pages \
+            -f source[path]=/ || echo "::warning::Pages 配置失败，请手动在 Settings -> Pages 选择 gh-pages 分支（/ 根目录）"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

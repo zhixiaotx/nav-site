@@ -16,13 +16,15 @@
     window.$docsify = {
       // 站点信息
       name: '🚀 我的导航站',
-      nameLink: '/',
+      nameLink: '#/',
       maxLevel: 4,
       subMaxLevel: 0,
       sidebarDisplayLevel: 1,
       loadSidebar: true,
       auto2top: true,
       themeColor: '#4a6cf7',
+      // 相对路径：支持部署在任意子路径（gh-pages / 子目录 / 各平台）
+      relativePath: true,
       // 搜索
       search: {
         placeholder: '🔍 搜索导航链接…',
