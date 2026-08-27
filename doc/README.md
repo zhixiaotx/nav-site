@@ -33,6 +33,7 @@ nav-site/
 ├── README.md                  # 【项目文档】也就是你正在看的这份（GitHub 仓库首页展示）
 ├── doc/                       # 【站点内容】docsify 站点根目录（发布时打包这一整个目录）
 │   ├── index.html             # 站点唯一入口（docsify 配置 + 引入资源）
+│   ├── .nojekyll              # 关键：禁用 Jekyll，让 GitHub Pages 直接静态托管（docsify 必需，勿删）
 │   ├── README.md              # 站点首页内容（导航入口页）
 │   ├── _sidebar.md            # 左侧导航栏定义（按 md 文件名分类）
 │   ├── ziyuan/                # 导航数据目录（每个 md = 左侧一个分类入口）

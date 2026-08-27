@@ -33,6 +33,7 @@ nav-site/
 ├── README.md                  # 【项目文档】也就是你正在看的这份（GitHub 仓库首页展示）
 ├── doc/                       # 【站点内容】docsify 站点根目录（发布时打包这一整个目录）
 │   ├── index.html             # 站点唯一入口（docsify 配置 + 引入资源）
+│   ├── .nojekyll              # 关键：禁用 GitHub Pages 的 Jekyll 构建，改为纯静态托管（docsify 必需，勿删）
 │   ├── README.md              # 站点首页内容（导航入口页）
 │   ├── _sidebar.md            # 左侧导航栏定义（按 md 文件名分类）
 │   ├── ziyuan/                # 导航数据目录（每个 md = 左侧一个分类入口）
@@ -199,6 +200,9 @@ window.$docsify = {
 
 **Q1：双击 index.html 打不开 / 空白？**
 docsify 依赖 HTTP 协议渲染，必须用本地服务器或部署到线上，不能用 file:// 直接打开。
+
+**Q0：部署后整个站点 404 / Jekyll 构建报错？**
+在 `doc/` 根目录放一个空文件 `.nojekyll`（本项目已包含）。GitHub Pages 默认会用 Jekyll 构建站点，它会忽略 `_` 开头的文件（如 `_sidebar.md`）并编译 SCSS，导致 docsify 站点构建失败。`.nojekyll` 让 GitHub 直接静态托管，跳过 Jekyll。
 
 **Q2：部署后图片/样式 404？**
 本项目所有资源均使用**相对路径**（`assets/...`、`#/...`），可部署在任意子路径。若仍异常，检查 `doc/index.html` 中 `relativePath: true` 是否保留。
