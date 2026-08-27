@@ -17,7 +17,7 @@
   --nav-stripe: #f8fafd;
   --nav-shadow: 0 2px 8px rgba(31, 35, 40, 0.06);
   --nav-sidebar-bg: #fafbfd;
-  --sidebar-width: 300px;
+  --sidebar-width: 220px;
 }
 
 body.nav-dark {
@@ -102,8 +102,8 @@ body.nav-sb-closed .sb-toggle {
 
 /* ---------- 内容区宽度 ---------- */
 .markdown-section {
-  max-width: 1100px !important;
-  padding: 24px 48px 60px !important;
+  max-width: 1200px !important;
+  padding: 24px 28px 60px !important;
 }
 @media (max-width: 768px) {
   .markdown-section {
