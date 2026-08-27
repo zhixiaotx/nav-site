@@ -26,15 +26,9 @@
       // 相对路径：false = 侧栏/正文里的相对链接始终基于站点根解析
       // （设为 true 会导致从子目录页再点链接时路径叠加，例如 ziyuan/ziyuan/...）
       relativePath: false,
-      // 搜索
-      search: {
-        placeholder: '🔍 搜索导航链接…',
-        noData: '没有找到相关链接',
-        depth: 6,
-        maxAge: 86400000,
-        paths: 'auto',
-        namespace: 'nav-search'
-      },
+      // 搜索：禁用 docsify 自带侧栏搜索框（会与折叠图标重叠）
+      // 站内/站外统一搜索栏由 assets/nav.js 注入到内容顶部
+      search: false,
       // 外链一律新窗口打开
       externalLinkTarget: '_blank',
       externalLinkRel: 'noopener'
@@ -46,7 +40,6 @@
 
   <!-- docsify 核心（本地化） -->
   <script src="assets/vendor/docsify.min.js"></script>
-  <!-- 插件 -->
-  <script src="assets/vendor/search.min.js"></script>
+  <!-- 站内/站外统一搜索栏由 assets/nav.js 注入，不再加载 docsify 自带搜索插件 -->
 </body>
 </html>

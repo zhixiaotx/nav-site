@@ -1,11 +1,11 @@
 /* ============================================
  * 我的导航站 - 功能增强插件
  * 功能：
- *  1. 站外搜索栏（20 个国内外搜索引擎，默认必应，可切换+记忆）
+ *  1. 统一搜索栏（站内/站外一键切换；站外=20 搜索引擎，站外默认必应，可切换+记忆）
  *  2. 一键置顶按钮
  *  3. 左侧面板折叠/展开（桌面端）
  *  4. 亮/暗主题切换按钮（localStorage 记忆）
- *  5. 分类标题(h1)美化标记
+ *  5. 分类标题(h1)标记 + 醒目样式
  * 注意：必须在 docsify 实例化前加载（push plugins）
  * ============================================ */
 (function () {
@@ -35,53 +35,121 @@
     { id: 'douban', name: '豆瓣',          url: 'https://www.douban.com/search?q=' }
   ];
   var LS_ENGINE = 'nav-ws-engine';
+  var LS_MODE = 'nav-ws-mode';
 
-  /* ---------- 站外搜索栏 ---------- */
-  function buildWebSearch() {
-    if (document.getElementById('web-search-bar')) return;
+  /* ---------- 统一搜索栏（站内 / 站外 切换） ---------- */
+  function buildUnifiedSearch() {
+    if (document.getElementById('web-search-bar')) return null;
 
     var bar = document.createElement('div');
     bar.id = 'web-search-bar';
     bar.className = 'web-search';
 
-    var sel = document.createElement('select');
-    sel.className = 'ws-engine';
-    sel.title = '选择搜索引擎';
-    var saved = 'bing';
-    try { saved = localStorage.getItem(LS_ENGINE) || 'bing'; } catch (e) {}
+    // 模式切换：站外(out) / 站内(in)
+    var modeBtn = document.createElement('button');
+    modeBtn.className = 'ws-mode';
+    modeBtn.type = 'button';
+    modeBtn.title = '切换 站内 / 站外 搜索';
+
+    // 搜索引擎下拉（仅站外模式显示）
+    var engineSel = document.createElement('select');
+    engineSel.className = 'ws-engine';
+    engineSel.title = '选择搜索引擎';
+    var savedEngine = 'bing';
+    try { savedEngine = localStorage.getItem(LS_ENGINE) || 'bing'; } catch (e) {}
     ENGINES.forEach(function (en) {
       var opt = document.createElement('option');
       opt.value = en.id;
       opt.textContent = en.name;
-      if (en.id === saved) opt.selected = true;
-      sel.appendChild(opt);
+      if (en.id === savedEngine) opt.selected = true;
+      engineSel.appendChild(opt);
     });
 
     var input = document.createElement('input');
     input.className = 'ws-input';
     input.type = 'text';
-    input.placeholder = '站外搜索：输入关键词，回车即搜';
 
     var btn = document.createElement('button');
     btn.className = 'ws-btn';
     btn.type = 'button';
     btn.textContent = '搜索';
 
+    var mode = 'out';
+    try { mode = localStorage.getItem(LS_MODE) || 'out'; } catch (e) {}
+
+    function applyMode() {
+      if (mode === 'in') {
+        bar.classList.add('mode-site');
+        modeBtn.textContent = '站内';
+        modeBtn.classList.add('site');
+        input.placeholder = '站内搜索：输入关键词筛选当前页链接';
+      } else {
+        bar.classList.remove('mode-site');
+        modeBtn.textContent = '站外';
+        modeBtn.classList.remove('site');
+        input.placeholder = '站外搜索：输入关键词，回车即搜';
+      }
+    }
+
+    function clearFilter() {
+      var sec = document.querySelector('article.markdown-section');
+      if (!sec) return;
+      sec.querySelectorAll('table tbody tr, h1.cat-heading').forEach(function (el) {
+        el.style.display = '';
+      });
+    }
+
+    // 站内搜索：按关键词筛选当前页表格行，并隐藏无匹配的分类标题
+    function siteFilter(term) {
+      var sec = document.querySelector('article.markdown-section');
+      if (!sec) return;
+      term = (term || '').trim().toLowerCase();
+      sec.querySelectorAll('h1.cat-heading').forEach(function (h) {
+        var t = h.nextElementSibling;
+        while (t && t.tagName !== 'TABLE') t = t.nextElementSibling;
+        if (!t) { h.style.display = ''; return; }
+        var rows = t.querySelectorAll('tbody tr');
+        var any = false;
+        rows.forEach(function (r) {
+          var match = !term || r.textContent.toLowerCase().indexOf(term) !== -1;
+          r.style.display = match ? '' : 'none';
+          if (match) any = true;
+        });
+        h.style.display = any ? '' : 'none';
+      });
+    }
+
     function doSearch() {
       var q = input.value.trim();
-      if (!q) { input.focus(); return; }
-      var engine = ENGINES.filter(function (e) { return e.id === sel.value; })[0] || ENGINES[0];
-      try { localStorage.setItem(LS_ENGINE, engine.id); } catch (e) {}
-      window.open(engine.url + encodeURIComponent(q), '_blank');
+      if (mode === 'out') {
+        if (!q) { input.focus(); return; }
+        var engine = ENGINES.filter(function (e) { return e.id === engineSel.value; })[0] || ENGINES[0];
+        try { localStorage.setItem(LS_ENGINE, engine.id); } catch (e) {}
+        window.open(engine.url + encodeURIComponent(q), '_blank');
+      } else {
+        siteFilter(q);
+      }
     }
+
+    modeBtn.addEventListener('click', function () {
+      mode = (mode === 'out') ? 'in' : 'out';
+      try { localStorage.setItem(LS_MODE, mode); } catch (e) {}
+      applyMode();
+      if (mode === 'out') clearFilter(); // 切到站外时恢复全部行
+    });
     btn.addEventListener('click', doSearch);
     input.addEventListener('keydown', function (ev) {
       if (ev.key === 'Enter') doSearch();
     });
+    input.addEventListener('input', function () {
+      if (mode === 'in') siteFilter(input.value); // 站内实时筛选
+    });
 
-    bar.appendChild(sel);
+    bar.appendChild(modeBtn);
+    bar.appendChild(engineSel);
     bar.appendChild(input);
     bar.appendChild(btn);
+    applyMode();
     return bar;
   }
 
@@ -145,16 +213,15 @@
     document.body.appendChild(btn);
   }
 
-  /* ---------- 分类标题(h1)美化标记 ---------- */
+  /* ---------- 分类标题(h1)标记 ---------- */
   function markHeadings(section) {
     var heads = section.querySelectorAll('h1');
     heads.forEach(function (h) { h.classList.add('cat-heading'); });
   }
 
-  /* ---------- 站外搜索栏插入到内容顶部 ---------- */
-  function injectWebSearch(section) {
-    if (document.getElementById('web-search-bar')) return;
-    var bar = buildWebSearch();
+  /* ---------- 统一搜索栏插入到内容顶部 ---------- */
+  function injectUnifiedSearch(section) {
+    var bar = buildUnifiedSearch();
     if (!bar) return;
     section.insertBefore(bar, section.firstChild);
   }
@@ -166,7 +233,7 @@
       var section = document.querySelector('article.markdown-section');
       if (!section) return;
       markHeadings(section);
-      injectWebSearch(section);
+      injectUnifiedSearch(section);
       buildTopButton();
       buildSidebarToggle();
       themeToggle();

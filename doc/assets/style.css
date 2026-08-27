@@ -64,6 +64,10 @@ body.nav-sb-closed .sidebar {
 body.nav-sb-closed .content {
   margin-left: 0 !important;
 }
+/* 折叠态：搜索栏右移，避开左上角折叠图标（图标约 14~50px） */
+body.nav-sb-closed .web-search {
+  margin-left: 44px;
+}
 /* 折叠后内容区平滑过渡 */
 .content {
   margin-left: var(--sidebar-width);
@@ -102,8 +106,8 @@ body.nav-sb-closed .sb-toggle {
 
 /* ---------- 内容区宽度 ---------- */
 .markdown-section {
-  max-width: 1200px !important;
-  padding: 24px 28px 60px !important;
+  max-width: 1300px !important;
+  padding: 20px 16px 60px !important;
 }
 @media (max-width: 768px) {
   .markdown-section {
@@ -171,6 +175,31 @@ body.nav-sb-closed .sb-toggle {
   opacity: 0.88;
 }
 
+/* ---------- 搜索模式切换按钮（站内/站外） ---------- */
+.ws-mode {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--nav-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.18s ease;
+}
+.ws-mode.site {
+  background: var(--nav-muted);
+}
+.ws-mode:hover {
+  opacity: 0.88;
+}
+/* 站内模式隐藏搜索引擎下拉 */
+.web-search.mode-site .ws-engine {
+  display: none;
+}
+
 /* ---------- 悬浮按钮（置顶 + 主题） ---------- */
 .fab-btn {
   position: fixed;
@@ -209,28 +238,32 @@ body.nav-sb-closed .sb-toggle {
   bottom: 22px;
 }
 
-/* ---------- 分类标题 ---------- */
+/* ---------- 分类标题（醒目胶囊徽标） ---------- */
 .cat-heading {
+  display: inline-block;
+  margin: 38px 0 16px;
+  padding: 7px 18px 7px 30px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #fff;
+  background: var(--nav-accent);
+  border-radius: 10px;
+  box-shadow: var(--nav-shadow);
   position: relative;
-  padding-left: 14px;
-  margin-top: 44px;
-  font-size: 1.4em;
-  color: var(--nav-text);
-  border-bottom: 1px solid var(--nav-card-border);
-  padding-bottom: 10px;
 }
 .cat-heading:first-of-type {
-  margin-top: 8px;
+  margin-top: 6px;
 }
 .cat-heading::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 6px;
-  bottom: 14px;
-  width: 4px;
-  border-radius: 2px;
-  background: var(--nav-accent);
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
 }
 .cat-heading .anchor {
   display: none;
