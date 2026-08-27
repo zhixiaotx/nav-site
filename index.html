@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="我的导航站 - 聚合常用网站、工具、资源导航">
+  <title>我的导航站</title>
+  <!-- 主题（本地化，避免 CDN 网络问题） -->
+  <link rel="stylesheet" href="assets/vendor/vue.css">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div id="app">加载中…</div>
+
+  <script>
+    window.$docsify = {
+      // 站点信息
+      name: '🚀 我的导航站',
+      nameLink: '/',
+      maxLevel: 4,
+      subMaxLevel: 0,
+      sidebarDisplayLevel: 1,
+      loadSidebar: true,
+      auto2top: true,
+      themeColor: '#4a6cf7',
+      // 搜索
+      search: {
+        placeholder: '🔍 搜索导航链接…',
+        noData: '没有找到相关链接',
+        depth: 6,
+        maxAge: 86400000,
+        paths: 'auto',
+        namespace: 'nav-search'
+      },
+      // 外链一律新窗口打开
+      externalLinkTarget: '_blank',
+      externalLinkRel: 'noopener'
+    };
+  </script>
+
+  <!-- 导航增强插件：必须在 docsify 实例化之前注册 -->
+  <script src="assets/nav.js"></script>
+
+  <!-- docsify 核心（本地化） -->
+  <script src="assets/vendor/docsify.min.js"></script>
+  <!-- 插件 -->
+  <script src="assets/vendor/search.min.js"></script>
+</body>
+</html>
