@@ -19,18 +19,49 @@
     return true;
   }
 
+  // 20 个国内外常用搜索引擎（key 用于标识，url 为搜索结果页模板，{q} 处拼关键词）
+  // 默认引擎为必应 Bing（DEFAULT_ENGINE）
+  var DEFAULT_ENGINE = 'bing';
+  var SEARCH_ENGINES = [
+    { key: 'bing',     name: '必应 Bing',   url: 'https://www.bing.com/search?q=' },
+    { key: 'baidu',    name: '百度',        url: 'https://www.baidu.com/s?wd=' },
+    { key: 'google',   name: 'Google',      url: 'https://www.google.com/search?q=' },
+    { key: 'bingcn',   name: '必应国内',     url: 'https://cn.bing.com/search?q=' },
+    { key: 'sogou',    name: '搜狗',        url: 'https://www.sogou.com/web?query=' },
+    { key: 'so360',    name: '360 搜索',     url: 'https://www.so.com/s?q=' },
+    { key: 'sm',       name: '神马搜索',     url: 'https://m.sm.cn/s?q=' },
+    { key: 'toutiao',  name: '头条搜索',     url: 'https://so.toutiao.com/search?keyword=' },
+    { key: 'quark',    name: '夸克搜索',     url: 'https://quark.sm.cn/s?q=' },
+    { key: 'weixin',   name: '微信搜一搜',   url: 'https://weixin.sogou.com/weixin?query=' },
+    { key: 'zhihu',    name: '知乎',        url: 'https://www.zhihu.com/search?type=content&q=' },
+    { key: 'weibo',    name: '微博',        url: 'https://s.weibo.com/weibo?q=' },
+    { key: 'bilibili', name: '哔哩哔哩',     url: 'https://search.bilibili.com/all?keyword=' },
+    { key: 'douyin',   name: '抖音',        url: 'https://www.douyin.com/search?keyword=' },
+    { key: 'xhs',      name: '小红书',      url: 'https://www.xiaohongshu.com/search_result?keyword=' },
+    { key: 'taobao',   name: '淘宝',        url: 'https://s.taobao.com/search?q=' },
+    { key: 'jd',       name: '京东',        url: 'https://search.jd.com/Search?keyword=' },
+    { key: 'github',   name: 'GitHub',      url: 'https://github.com/search?q=' },
+    { key: 'ddg',      name: 'DuckDuckGo',  url: 'https://duckduckgo.com/?q=' },
+    { key: 'yahoo',    name: 'Yahoo',       url: 'https://search.yahoo.com/search?p=' }
+  ];
+
+  function engineUrl(key) {
+    for (var i = 0; i < SEARCH_ENGINES.length; i++) {
+      if (SEARCH_ENGINES[i].key === key) return SEARCH_ENGINES[i].url;
+    }
+    return SEARCH_ENGINES[0].url; // 找不到则回退到默认（必应）
+  }
+
+  function getSavedEngine() {
+    try { return localStorage.getItem('nav-engine'); } catch (e) { return null; }
+  }
+  function saveEngine(key) {
+    try { localStorage.setItem('nav-engine', key); } catch (e) {}
+  }
+
   // 站外搜索：按所选引擎打开新标签页
   function runWebSearch(engine, q) {
-    var url;
-    if (engine === 'google') {
-      url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
-    } else if (engine === 'bing') {
-      url = 'https://www.bing.com/search?q=' + encodeURIComponent(q);
-    } else if (engine === 'bingcn') {
-      url = 'https://cn.bing.com/search?q=' + encodeURIComponent(q);
-    } else {
-      url = 'https://www.baidu.com/s?wd=' + encodeURIComponent(q);
-    }
+    var url = engineUrl(engine) + encodeURIComponent(q);
     window.open(url, '_blank', 'noopener');
   }
 
@@ -41,13 +72,17 @@
       if (sb) {
         var box = document.createElement('div');
         box.className = 'web-search';
+        // 动态生成 20 个搜索引擎下拉项；默认选中必应（记忆上次选择）
+        var savedEngine = getSavedEngine();
+        var activeEngine = savedEngine || DEFAULT_ENGINE;
+        var opts = '';
+        for (var i = 0; i < SEARCH_ENGINES.length; i++) {
+          var e = SEARCH_ENGINES[i];
+          opts += '<option value="' + e.key + '"' +
+            (e.key === activeEngine ? ' selected' : '') + '>' + e.name + '</option>';
+        }
         box.innerHTML =
-          '<select class="ws-engine" title="选择搜索引擎">' +
-          '<option value="baidu">百度</option>' +
-          '<option value="google">Google</option>' +
-          '<option value="bing">Bing</option>' +
-          '<option value="bingcn">必应</option>' +
-          '</select>' +
+          '<select class="ws-engine" title="选择搜索引擎">' + opts + '</select>' +
           '<input class="ws-input" type="text" placeholder="站外搜索关键词" />' +
           '<button class="ws-btn" type="button">搜索</button>' +
           '<button class="ws-mode" type="button">站外</button>';
@@ -58,6 +93,10 @@
         var input = box.querySelector('.ws-input');
         var btn = box.querySelector('.ws-btn');
         var modeBtn = box.querySelector('.ws-mode');
+
+        engine.addEventListener('change', function () {
+          saveEngine(engine.value); // 记忆所选引擎
+        });
 
         function doSearch() {
           var q = input.value.trim();
