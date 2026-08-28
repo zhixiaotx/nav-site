@@ -1,80 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="我的导航站 - 聚合常用网站、工具、资源导航">
-  <title>我的导航站</title>
-  <!-- 主题（本地化，避免 CDN 网络问题） -->
-  <link rel="stylesheet" href="assets/vendor/vue.css">
-  <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8" />
+  <title>🚀 我的导航站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <meta name="description" content="我的导航站 - 聚合常用网站、工具、资源导航" />
+
+  <!-- 主题样式（CDN，参考 zhixiaotx/blog 的可达配置） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
   <div id="app">加载中…</div>
 
   <script>
     window.$docsify = {
-      // 站点信息
       name: '🚀 我的导航站',
       nameLink: '#/',
-      maxLevel: 4,
-      subMaxLevel: 0,
-      sidebarDisplayLevel: 1,
+      repo: '',
+      // 侧边栏导航（_sidebar.md 中的 55 个分类）
       loadSidebar: true,
+      subMaxLevel: 2,
+      maxLevel: 4,
       auto2top: true,
-      themeColor: '#4a6cf7',
-      // 相对路径：false = 侧栏/正文里的相对链接始终基于站点根解析
-      // （设为 true 会导致从子目录页再点链接时路径叠加，例如 ziyuan/ziyuan/...）
+      loadNavbar: false,
+      coverpage: false,
+      // 相对链接始终基于站点根解析，避免从子目录页再点链接时路径叠加
       relativePath: false,
-      // 搜索：禁用 docsify 自带侧栏搜索框（会与折叠图标重叠）
-      // 站内/站外统一搜索栏由 assets/nav.js 注入到内容顶部
-      search: false,
-      // 外链一律新窗口打开
+      // 站内搜索（docsify 官方插件，稳定可靠）
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: '搜索分类 / 站点',
+        noData: '找不到结果',
+        depth: 4
+      },
+      // 外链新窗口打开
       externalLinkTarget: '_blank',
       externalLinkRel: 'noopener',
-      // 404 时渲染 _404.md（终止 404 死循环，而不是永久停在加载占位）
+      // 找不到页面时渲染 _404.md（而不是永久停在加载占位）
       notFoundPage: true,
-      // 插件（nav.js）万一抛错也不要中断正文渲染
+      // 插件万一抛错也不要中断正文渲染
       catchPluginErrors: true
     };
   </script>
 
-  <!-- 导航增强插件：必须在 docsify 实例化之前注册 -->
-  <script src="assets/nav.js"></script>
-
-  <!-- docsify 核心（本地化） -->
-  <script src="assets/vendor/docsify.min.js"></script>
-  <!-- 站内/站外统一搜索栏由 assets/nav.js 注入，不再加载 docsify 自带搜索插件 -->
-
-  <!-- 加载看门狗：万一某页渲染卡死，绝不永久停在“加载中”，给出回退提示 -->
-  <script>
-    (function () {
-      function isStuck() {
-        var app = document.getElementById('app');
-        if (!app) return false;
-        // 初始占位未被替换：#app 仍是“加载中…”且没有渲染出的正文
-        return app.textContent.indexOf('加载中') !== -1 &&
-               !app.querySelector('article.markdown-section');
-      }
-      function showFallback() {
-        var app = document.getElementById('app');
-        if (!app || app.querySelector('.load-fallback')) return;
-        app.innerHTML =
-          '<div class="load-fallback" style="padding:48px;text-align:center;color:#666">' +
-          '<h2 style="color:#e0533d">⚠️ 页面加载失败</h2>' +
-          '<p>该导航分类暂时无法渲染（可能是文件内容异常或网络问题）。</p>' +
-          '<p><a href="#/" style="color:#4a6cf7;font-weight:700">← 返回首页</a></p>' +
-          '<p style="font-size:12px;color:#999">若持续出现，请在 GitHub 提交 Issue 并附上分类名称。</p>' +
-          '</div>';
-      }
-      // 首屏看门狗：放宽到 25s，避免国内访问 GitHub Pages 偶发慢速被误判为失败
-      // （docsify 一旦渲染会覆盖 #app，回退提示自动消失，无需手动处理）
-      setTimeout(function () { if (isStuck()) showFallback(); }, 25000);
-      // 路由切换看门狗：每次切换后若长时间未渲染出正文，给出提示
-      window.addEventListener('hashchange', function () {
-        setTimeout(function () { if (isStuck()) showFallback(); }, 25000);
-      });
-    })();
-  </script>
+  <!-- Docsify v4（CDN，已验证国内可达） -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- 官方搜索插件 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 </body>
 </html>
