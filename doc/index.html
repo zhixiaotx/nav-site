@@ -31,7 +31,11 @@
       search: false,
       // 外链一律新窗口打开
       externalLinkTarget: '_blank',
-      externalLinkRel: 'noopener'
+      externalLinkRel: 'noopener',
+      // 404 时渲染 _404.md（终止 404 死循环，而不是永久停在加载占位）
+      notFoundPage: true,
+      // 插件（nav.js）万一抛错也不要中断正文渲染
+      catchPluginErrors: true
     };
   </script>
 
