@@ -5,7 +5,7 @@
 - [📄 DieHeart](ziyuan/DieHeart.md)
 - [📄 HaoRan](ziyuan/HaoRan.md)
 - [📄 Python小白](ziyuan/Python小白.md)
-- [📄 W and Y](ziyuan/W and Y.md)
+- [📄 WandY](ziyuan/WandY.md)
 - [📄 ZCC小站](ziyuan/ZCC小站.md)
 - [📄 admin](ziyuan/admin.md)
 - [📄 benhappy](ziyuan/benhappy.md)
