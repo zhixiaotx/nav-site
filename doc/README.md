@@ -2,10 +2,15 @@
 
 > 基于 [docsify](https://github.com/docsifyjs/docsify/) 构建的**零依赖、零构建**静态导航站。
 > 左侧按 Markdown 文件分类（显示文件名，不带 `.md`），右侧展示「分类标题 + 表格」链接列表；
-> 顶部内置**统一搜索栏**（站内/站外一键切换，20 个国内外搜索引擎，默认必应，可记忆）；
-> 另有**一键置顶、左侧面板折叠、亮暗主题、移动端适配**。
+> 顶部内置**站内搜索**（docsify 官方插件）；整体**移动端自适应**。
 
-> 📌 本文件是网站首页内容（线上可见）。项目完整文档（含部署/工作流详解）在仓库根目录 `README.md`。
+> 📌 本文件是网站首页内容（线上可见）。项目完整文档（含部署 / 工作流 / 小白 Git 教程）在仓库根目录 `README.md`。
+
+> 🔧 **架构变更（2026-08-28）**：本站此前为"本地化 docsify + 自定义 `nav.js` 插件 + 看门狗回退"方案，
+> 自定义代码在部分网络 / 浏览器环境下会中断 docsify 挂载，导致「点击分类 → 页面加载失败」。
+> 已**重构为标准 CDN docsify 配置**（参照可正常工作的 [`zhixiaotx/blog`](https://github.com/zhixiaotx/blog) 项目）：
+> 移除 `nav.js` / `assets/vendor/` / 看门狗回退逻辑，docsify 核心与主题改由 `cdn.jsdelivr.net` 加载，
+> 仅保留官方搜索插件与 `notFoundPage` / `catchPluginErrors` 守门。点任意分类现在都能正常渲染。
 
 ---
 
@@ -13,11 +18,8 @@
 
 | 功能 | 说明 |
 | ---- | ---- |
-| 📚 分类导航 | 左侧按 md 文件名分类（`xiaoshuitongxue` / `zygjdq`），右侧分类标题 + 表格展示 |
-| 🔍 统一搜索栏 | 顶部一个搜索栏，左侧「站外 / 站内」切换按钮。**站外**= 20 个引擎选搜；**站内**= 实时筛选当前页链接 |
-| ⬆️ 一键置顶 | 滚动超过一屏后，右下角出现「回到顶部」按钮 |
-| 📂 面板折叠 | 桌面端左上角 ☰ 按钮可折叠 / 展开左侧面板 |
-| 🌙 亮暗主题 | 右下角一键切换，自动记忆选择 |
+| 📚 分类导航 | 左侧按 md 文件名分类（共 **55** 个分类入口），右侧分类标题 + 表格展示 |
+| 🔍 站内搜索 | docsify 官方搜索插件，按「分类名 / 站点名 / 链接」实时检索 |
 | 📱 移动端适配 | 手机 / 平板 / 小屏自适应，表格可横向滑动 |
 | 🚀 多平台部署 | 支持 GitHub Pages（CI 自动）、Cloudflare Pages、Vercel、Netlify，均无需构建 |
 
@@ -27,7 +29,8 @@
 
 - **docsify**：一个文档网站生成器。它**不构建**——直接加载 Markdown 文件并在浏览器中实时渲染，改完 `.md` 保存即生效。
 - **纯静态**：整个站点只有 HTML / CSS / JS / Markdown，无数据库、无后端、无构建步骤。
-- **本地化依赖**：docsify 核心库已下载到 `doc/assets/vendor/`，不依赖外网 CDN，国内访问稳定。
+- **CDN 加载**：docsify 核心与 vue 主题从 `cdn.jsdelivr.net` 加载（已验证国内可达）；自定义样式 `style.css` 随仓库发布。
+  - 若 `jsdelivr` 在你的网络不可达，可把 `index.html` 里的 `cdn.jsdelivr.net/npm/docsify@4` 换成 `unpkg.com/docsify@4` 或本地化引入。
 - **相对路径**：站点所有资源（CSS/JS）与导航链接都使用相对路径，可部署在任意子路径或域名。
 
 ---
@@ -38,20 +41,16 @@
 nav-site/
 ├── README.md                  # 【项目文档】GitHub 仓库首页说明（更详细）
 ├── doc/                       # 【站点内容】docsify 站点根目录（发布时打包这一整个目录）
-│   ├── index.html             # 站点唯一入口（docsify 配置 + 引入资源）
-│   ├── .nojekyll              # 关键：禁用 GitHub Pages 的 Jekyll 构建，改为纯静态托管（docsify 必需，勿删）
+│   ├── index.html             # 站点唯一入口（docsify 配置 + 从 CDN 引入 docsify）
+│   ├── .nojekyll              # 关键：禁用 GitHub Pages 的 Jekyll 构建
 │   ├── README.md              # 站点首页内容（你正在看的文件）
-│   ├── _sidebar.md            # 左侧导航栏定义（按 md 文件名分类，每行一个入口）
-│   ├── ziyuan/                # 导航数据目录（每个 md = 左侧一个分类入口）
-│   │   ├── xiaoshuitongxue.md # 导航数据①：小帅同学（18 个分类）
-│   │   └── zygjdq.md          # 导航数据②：资源工具（25 个分类）
+│   ├── _sidebar.md            # 左侧导航栏定义（55 个分类入口）
+│   ├── _404.md                # 找不到页面时展示的回退内容
+│   ├── ziyuan/                # 导航数据目录（每个 md = 左侧一个分类入口，共 55 个）
+│   │   ├── ai.md              # 示例分类：AI 人工智能导航
+│   │   └── ...                # 其余 54 个分类（文件名为 ASCII，避免跨平台大小写冲突）
 │   ├── assets/
-│   │   ├── nav.js             # 功能增强插件：统一搜索栏(站内/站外)、置顶、折叠、主题、分类标题注入
-│   │   ├── style.css          # 自定义样式：表格美化、搜索栏、主题变量、移动端 @media
-│   │   └── vendor/            # 本地化的 docsify 依赖库（勿删）
-│   │       ├── docsify.min.js # docsify 核心
-│   │       ├── vue.css        # 官方 vue 主题
-│   │       └── search.min.js  # ⚠️ 已弃用：站内搜索已合并进 nav.js 的统一搜索栏，index.html 不再加载它（可删，保留无害）
+│   │   └── style.css          # 自定义样式：表格美化、配色变量、移动端 @media
 │   └── scripts/
 │       └── gen_sidebar.py     # [可选] 自动生成侧边栏的 Python 脚本
 └── .github/
@@ -65,10 +64,9 @@ nav-site/
 | ---- | ---- | ---- |
 | `doc/ziyuan/*.md` | **日常维护对象**。每个文件 = 左侧一个分类入口；文件内每个 `# 标题` = 一个分类，下面跟一个三列表格 | ✅ 最常改 |
 | `doc/_sidebar.md` | 决定**左侧显示哪些入口**、顺序、显示文字。新增 md 后必须在这里加一行 | ✅ 加分类时要改 |
-| `doc/index.html` | docsify 总配置：站点名、主题色、相对路径、搜索开关等。改站名/主题色来这里 | 偶尔 |
-| `doc/assets/nav.js` | 所有"花活"都在这：顶部统一搜索栏、20 个引擎列表、置顶按钮、折叠按钮、主题切换、给每个表格上方注入分类标题 | 偶尔 |
-| `doc/assets/style.css` | 颜色、字体、间距、表格样式、移动端断点。想换配色/调间距来这里 | 偶尔 |
-| `doc/assets/vendor/*` | docsify 官方库，已本地化 | ❌ 不要动 |
+| `doc/index.html` | docsify 总配置：站点名、相对路径、站内搜索、404 处理、CDN 地址等。改站名 / 主题色 / 搜索词来这里 | 偶尔 |
+| `doc/_404.md` | 找不到对应页面时文档化展示的内容（替代原先"页面加载失败"提示） | 很少 |
+| `doc/assets/style.css` | 颜色、字体、间距、表格样式、移动端断点。想换配色 / 调间距来这里 | 偶尔 |
 | `doc/.nojekyll` | 空文件，告诉 GitHub Pages 别用 Jekyll 构建（否则 `_sidebar.md` 会被忽略导致白屏） | ❌ 别删 |
 | `.github/workflows/deploy.yml` | 自动部署流水线，push 到 main 就自动发布 | 一般不用改 |
 
@@ -97,12 +95,10 @@ npx serve .
 
 ### 方法二：部署到 GitHub Pages（推荐，自动部署）
 
-1. **推送代码**：把 `nav-site` 整个项目推送到你的 GitHub 仓库 `main` 分支（首次建仓库见下方「实操示例」）。
+1. **推送代码**：把 `nav-site` 整个项目推送到你的 GitHub 仓库 `main` 分支（首次建仓库见仓库根 `README.md` 的「小白 Git 教程」）。
 2. **开启 Pages**：仓库 `Settings → Pages`，Source 选 **Deploy from a branch**，分支选 **gh-pages**，目录 `/ (root)`，保存。
 3. **自动部署**：以后每次 `push` 到 `main`，GitHub Actions 自动把 `doc/` 打包推到 `gh-pages` 并更新线上。
 4. **访问地址**：`https://<你的用户名>.github.io/<仓库名>/`（本仓库即 `https://zhixiaotx.github.io/nav-site/`）
-
-> 首次运行若 `gh-pages` 分支没自动出现，去 `Actions` 页面看日志，或手动在 `Settings → Pages` 选一次 gh-pages 分支即可。
 
 ### 方法三：部署到其他平台
 
@@ -123,8 +119,6 @@ npx serve .
 2. **Build command 留空**，**Publish directory 填 `doc`**。
 3. **Deploy site**，完成。每次 push 自动部署。
 
-> 三种平台都会读取 `doc/.nojekyll`，跳过 Jekyll，因此 `_sidebar.md` 等下划线文件不会被忽略。
-
 ---
 
 ## 📝 实操示例：新增一个导航分类文件
@@ -133,7 +127,7 @@ npx serve .
 
 ### 第 1 步：新建 md 文件
 
-进入 `nav-site/doc/ziyuan/` 文件夹，新建文件 `影视资源.md`（文件名随意，建议英文/拼音避免乱码，用中文也行）。
+进入 `nav-site/doc/ziyuan/` 文件夹，新建文件 `影视资源.md`（文件名建议用英文 / 拼音，避免大小写冲突；中文也行）。
 
 用记事本 / VS Code 打开，写入内容。**格式固定**：每个 `# 一级标题` = 一个分类，紧跟一个三列表格（`名称 | 链接 | 介绍`）。
 
@@ -186,22 +180,6 @@ git push origin main
 
 ---
 
-## ⚙️ GitHub Actions 工作流详解
-
-部署配置在 `.github/workflows/deploy.yml`，**一般不需要改**，但了解原理有助于排查：
-
-- **触发条件**：每次 `git push` 到 `main` 分支（也支持在 Actions 页面手动 `Run workflow`）。
-- **执行流程**：
-  1. `actions/checkout@v4` 拉取代码；
-  2. `peaceiris/actions-gh-pages@v4` 把 `doc/` 整个目录打包，**推送到 `gh-pages` 分支**（`force_orphan: true` 让该分支保持为干净的发布专用孤儿分支）；
-  3. 调用 GitHub API，把仓库 Pages 部署源设为 `gh-pages` 分支（`build_type=legacy`，即从分支部署，而非 GitHub Actions 构建）。
-- **所需权限**：`contents: write`（推分支）、`pages: write`（配置 Pages）、`id-token: write`（OIDC）。
-- **发布目录**：`publish_dir: ./doc` —— 注意是 `doc` 不是仓库根，只有站点内容被发布。
-
-> 一句话：**push 到 main → 自动打包 doc/ → 推 gh-pages → 线上更新**。
-
----
-
 ## 🔗 相对路径（relativePath）说明
 
 `doc/index.html` 中配置了 `relativePath: false`，这是踩坑验证后的关键设置：
@@ -235,22 +213,30 @@ git push origin main
 ```js
 window.$docsify = {
   name: '🚀 我的导航站',        // ← 站点名称
-  themeColor: '#4a6cf7'         // ← 主题色（十六进制色值）
+  // 如需修改主题色（影响顶部加载进度条 / 链接高亮），可加下面这一行：
+  themeColor: '#4a6cf7'         // ← 主题色（十六进制色值，可选）
 };
 ```
 
-### 2. 修改 / 增删搜索引擎
+### 2. 站内搜索配置（docsify 官方插件）
 
-编辑 `doc/assets/nav.js` 中的 `ENGINES` 数组：
+站内搜索由 docsify 官方 `search.min.js`（已在 `index.html` 通过 CDN 引入）提供，配置写在 `doc/index.html` 的 `search` 字段：
 
 ```js
-{ id: 'bing', name: '必应 Bing', url: 'https://www.bing.com/search?q=' }
+window.$docsify = {
+  search: {
+    maxAge: 86400000,      // 搜索索引缓存时长（毫秒），默认 1 天
+    paths: 'auto',         // 自动索引所有页面
+    placeholder: '搜索分类 / 站点',  // 搜索框占位文字
+    noData: '找不到结果',            // 无结果提示
+    depth: 4               // 标题检索深度
+  }
+};
 ```
 
-- `id`：唯一标识（与 localStorage 记忆相关，改动后旧选择会失效）
-- `name`：下拉框显示名
-- `url`：搜索地址模板，关键词自动拼在末尾并 URL 编码
-- 数组**第一项即默认引擎**（当前默认必应）
+- `placeholder` / `noData`：改成你想要的提示文字。
+- `maxAge`：调小可让搜索索引更频繁更新（调试时常用）。
+- `depth`：控制收录到第几级标题。
 
 ### 3. 修改左侧面板入口
 
@@ -258,8 +244,8 @@ window.$docsify = {
 
 ```markdown
 - [🏠 首页](/)
-- [📄 xiaoshuitongxue](ziyuan/xiaoshuitongxue.md)
-- [📄 zygjdq](ziyuan/zygjdq.md)
+- [📄 AI人工智能导航](ziyuan/ai.md)
+- [📄 小帅同学](ziyuan/admin.md)
 ```
 
 ### 4. 修改配色 / 间距 / 字体
@@ -267,9 +253,15 @@ window.$docsify = {
 编辑 `doc/assets/style.css` 顶部的 `:root` 变量（亮色）与 `body.nav-dark`（暗色），如：
 `--nav-accent`（主题蓝）、`--sidebar-width`（侧栏宽）、`--nav-bg`（背景）等。
 
-### 5. 主题 / 折叠的记忆
+### 5. 暗色样式
 
-选择自动存浏览器 `localStorage`，清除浏览器数据后恢复默认。
+`style.css` 已内置暗色变量（`body.nav-dark`）。当前站点默认亮色；如需默认暗色，可在 `doc/index.html` 的 `<body>` 加载后注入：
+
+```html
+<script>document.body.classList.add('nav-dark');</script>
+```
+
+（仅影响视觉样式，不影响功能。）
 
 ---
 
@@ -279,9 +271,9 @@ window.$docsify = {
 
 | 断点 | 设备 | 具体表现 |
 | ---- | ---- | ---- |
-| ≤768px | 平板 / 大手机横屏 | 左侧分类栏默认隐藏，用 docsify 自带左上角 ☰ 汉堡菜单展开/收起；自定义折叠按钮自动隐藏；正文顶部留 70px 避免被固定元素遮挡 |
-| ≤480px | 手机 | 统一搜索栏的「引擎下拉 + 输入框 + 按钮」自动换行堆叠；表格可横向滑动；悬浮按钮缩小 |
-| ≤359px | 超窄屏 | 搜索引擎下拉与按钮变整行全宽，保证不溢出 |
+| ≤768px | 平板 / 大手机横屏 | 左侧分类栏默认隐藏，用 docsify 自带左上角 ☰ 汉堡菜单展开 / 收起；正文顶部留 70px 避免被固定元素遮挡 |
+| ≤480px | 手机 | 表格可横向滑动；悬浮按钮缩小 |
+| ≤359px | 超窄屏 | 布局进一步收窄，保证不溢出 |
 
 - 表格在窄屏通过 `overflow-x: auto` 横向滚动，不会撑破页面。
 - 微调某档设备样式，直接改 `style.css` 对应 `@media` 区块即可。
@@ -311,6 +303,9 @@ docsify 表格列数自由，但「最后一列弱化」样式基于三列设计
 ```bash
 cd doc && python scripts/gen_sidebar.py
 ```
+
+**Q7：为什么之前点分类会「⚠️ 页面加载失败」，现在不会了？**
+此前本站使用"本地化 docsify + 自定义 `nav.js` 插件 + 看门狗回退"组合，自定义代码在部分网络 / 浏览器环境下会中断 docsify 挂载，从而触发回退提示。**2026-08-28 已重构为标准 CDN docsify**（参照可正常工作的 `zhixiaotx/blog`）：移除 `nav.js` 与本地化 `vendor/`、docsify 由 `cdn.jsdelivr.net` 加载、仅保留官方搜索插件与 `notFoundPage` / `catchPluginErrors` 守门。现在点击任意分类都会正常渲染分类内容。
 
 ---
 
