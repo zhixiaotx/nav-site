@@ -1,7 +1,7 @@
 /* ============================================
  * 我的导航站 - 自定义样式
- * 覆盖 docsify vue 主题：表格美化 / 站外搜索栏 / 置顶按钮 /
- * 侧边栏折叠 / 分类标题 / 亮暗主题 / 移动端适配
+ * 覆盖 docsify vue 主题：表格美化 / 统一搜索栏 /
+ * 置顶按钮 / 侧边栏折叠 / 分类徽标 / 亮暗主题 / 移动端适配
  * ============================================ */
 
 /* ---------- 主题变量 ---------- */
@@ -17,7 +17,7 @@
   --nav-stripe: #f8fafd;
   --nav-shadow: 0 2px 8px rgba(31, 35, 40, 0.06);
   --nav-sidebar-bg: #fafbfd;
-  --sidebar-width: 220px;
+  --sidebar-width: 200px;
 }
 
 body.nav-dark {
@@ -40,11 +40,13 @@ body {
   color: var(--nav-text);
   transition: background 0.25s ease, color 0.25s ease;
 }
+
+/* ---------- 侧边栏 ---------- */
 .sidebar {
   background: var(--nav-sidebar-bg);
   border-right: 1px solid var(--nav-card-border);
-  width: var(--sidebar-width);
-  transition: transform 0.25s ease;
+  width: var(--sidebar-width) !important;
+  transition: transform 0.25s ease, width 0.25s ease;
 }
 .sidebar .app-name-link,
 .sidebar ul li a,
@@ -57,6 +59,14 @@ body {
   background: var(--nav-accent-soft);
 }
 
+/* ---------- 内容区：紧贴侧栏，消除空白 ---------- */
+.content {
+  margin-left: var(--sidebar-width) !important;
+  transition: margin-left 0.25s ease;
+  /* 去掉 docsify 默认的额外 padding */
+  padding: 0 !important;
+}
+
 /* ---------- 侧边栏折叠（桌面端） ---------- */
 body.nav-sb-closed .sidebar {
   transform: translateX(-100%);
@@ -64,24 +74,25 @@ body.nav-sb-closed .sidebar {
 body.nav-sb-closed .content {
   margin-left: 0 !important;
 }
-/* 折叠态：搜索栏右移，避开左上角折叠图标（图标约 14~50px） */
+/* 折叠态：搜索栏右移避开左上角折叠图标 */
 body.nav-sb-closed .web-search {
   margin-left: 44px;
 }
-/* 折叠后内容区平滑过渡 */
-.content {
-  margin-left: var(--sidebar-width);
-  transition: margin-left 0.25s ease;
+
+/* ---------- 正文区内边距（紧凑） ---------- */
+.markdown-section {
+  max-width: 1400px !important;
+  padding: 16px 12px 60px !important;
 }
 
-/* ---------- 侧边栏折叠按钮（左上角悬浮） ---------- */
+/* ---------- 侧边栏折叠按钮 ---------- */
 .sb-toggle {
   position: fixed;
-  left: 14px;
-  top: 12px;
+  left: 10px;
+  top: 10px;
   z-index: 1002;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--nav-card-border);
   border-radius: 8px;
   font-size: 16px;
@@ -90,7 +101,6 @@ body.nav-sb-closed .web-search {
   background: var(--nav-card-bg);
   color: var(--nav-text);
   box-shadow: var(--nav-shadow);
-  transition: background 0.18s ease, color 0.18s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,33 +109,19 @@ body.nav-sb-closed .web-search {
   background: var(--nav-accent);
   color: #fff;
 }
-/* 折叠时按钮贴到内容区左上角 */
-body.nav-sb-closed .sb-toggle {
-  left: 14px;
-}
 
-/* ---------- 内容区宽度 ---------- */
-.markdown-section {
-  max-width: 1300px !important;
-  padding: 20px 16px 60px !important;
-}
-@media (max-width: 768px) {
-  .markdown-section {
-    padding: 70px 16px 60px !important;
-  }
-}
-
-/* ---------- 站外搜索栏 ---------- */
+/* ---------- 统一搜索栏 ---------- */
 .web-search {
   display: flex;
   gap: 8px;
   align-items: center;
-  padding: 10px;
-  margin: 0 0 22px;
+  padding: 10px 12px;
+  margin: 0 0 18px;
   background: var(--nav-card-bg);
   border: 1px solid var(--nav-card-border);
   border-radius: 12px;
   box-shadow: var(--nav-shadow);
+  flex-wrap: wrap;
 }
 .ws-engine {
   flex: 0 0 auto;
@@ -144,7 +140,7 @@ body.nav-sb-closed .sb-toggle {
 }
 .ws-input {
   flex: 1 1 auto;
-  min-width: 0;
+  min-width: 120px;
   padding: 8px 12px;
   border: 1px solid var(--nav-card-border);
   border-radius: 8px;
@@ -169,13 +165,12 @@ body.nav-sb-closed .sb-toggle {
   color: #fff;
   font-size: 14px;
   cursor: pointer;
-  transition: opacity 0.18s ease;
 }
 .ws-btn:hover {
   opacity: 0.88;
 }
 
-/* ---------- 搜索模式切换按钮（站内/站外） ---------- */
+/* 搜索模式切换按钮 */
 .ws-mode {
   flex: 0 0 auto;
   padding: 8px 12px;
@@ -187,7 +182,6 @@ body.nav-sb-closed .sb-toggle {
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.18s ease;
 }
 .ws-mode.site {
   background: var(--nav-muted);
@@ -195,7 +189,7 @@ body.nav-sb-closed .sb-toggle {
 .ws-mode:hover {
   opacity: 0.88;
 }
-/* 站内模式隐藏搜索引擎下拉 */
+/* 站内模式隐藏引擎下拉 */
 .web-search.mode-site .ws-engine {
   display: none;
 }
@@ -214,7 +208,6 @@ body.nav-sb-closed .sb-toggle {
   background: var(--nav-accent);
   color: #fff;
   box-shadow: 0 4px 14px rgba(74, 108, 247, 0.4);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,7 +215,6 @@ body.nav-sb-closed .sb-toggle {
 .fab-btn:hover {
   transform: scale(1.08);
 }
-/* 置顶按钮：滚动后才显示 */
 .top-btn {
   bottom: 78px;
   opacity: 0;
@@ -233,40 +225,57 @@ body.nav-sb-closed .sb-toggle {
   opacity: 1;
   pointer-events: auto;
 }
-/* 主题按钮 */
 .theme-toggle {
   bottom: 22px;
 }
 
 /* ---------- 分类标题（醒目胶囊徽标） ---------- */
-.cat-heading {
+.cat-badge {
   display: inline-block;
-  margin: 38px 0 16px;
-  padding: 7px 18px 7px 30px;
-  font-size: 1.2em;
+  margin: 28px 0 12px;
+  padding: 7px 20px 7px 32px;
+  font-size: 1.15em;
   font-weight: 700;
   color: #fff;
-  background: var(--nav-accent);
+  background: linear-gradient(135deg, #4a6cf7, #6d8bff);
   border-radius: 10px;
-  box-shadow: var(--nav-shadow);
+  box-shadow: 0 3px 12px rgba(74, 108, 247, 0.35);
   position: relative;
+  letter-spacing: 0.5px;
 }
-.cat-heading:first-of-type {
-  margin-top: 6px;
+.cat-badge:first-child {
+  margin-top: 4px;
 }
-.cat-heading::before {
+.cat-badge::before {
   content: '';
   position: absolute;
-  left: 12px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #fff;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 0 6px rgba(255,255,255,0.5);
 }
-.cat-heading .anchor {
-  display: none;
+
+/* 也保留对原生 h1.cat-heading 的样式（兜底）——强制 !important 覆盖 docsify 主题 */
+h1.cat-heading {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 28px 0 12px !important;
+  padding: 7px 20px 7px 32px !important;
+  font-size: 1.15em !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #4a6cf7, #6d8bff) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 3px 12px rgba(74, 108, 247, 0.35) !important;
+  position: relative !important;
+  height: auto !important;
+  overflow: visible !important;
+  clip: auto !important;
 }
 
 /* ---------- 表格美化 ---------- */
@@ -277,7 +286,7 @@ body.nav-sb-closed .sb-toggle {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: var(--nav-shadow);
-  margin: 14px 0 30px;
+  margin: 0 0 28px;
   background: var(--nav-card-bg);
 }
 .markdown-section table thead th {
@@ -326,7 +335,7 @@ body.nav-sb-closed .sb-toggle {
   font-size: 13px;
 }
 
-/* ---------- 搜索框主题适配 ---------- */
+/* ---------- 搜索框主题适配（docsify 兼容） ---------- */
 .search input {
   background: var(--nav-card-bg) !important;
   color: var(--nav-text) !important;
@@ -341,31 +350,29 @@ body.nav-sb-closed .sb-toggle {
 }
 
 /* ============================================
- * 移动端适配（平板 / 手机 / 小屏）
+ * 移动端适配
  * ============================================ */
 
-/* 平板及以下：隐藏自定义折叠按钮，使用 docsify 自带菜单 */
 @media (max-width: 768px) {
   .sb-toggle {
     display: none;
   }
-  /* 确保 docsify 自带汉堡菜单可见 */
   .sidebar-toggle {
     display: flex !important;
     align-items: center;
     justify-content: center;
     z-index: 1002;
   }
-  body.nav-sb-closed .content {
-    margin-left: 0 !important;
-  }
+  body.nav-sb-closed .content,
   .content {
     margin-left: 0 !important;
   }
   .sidebar {
     width: 260px !important;
   }
-  /* 站外搜索栏紧凑布局 */
+  .markdown-section {
+    padding: 70px 12px 60px !important;
+  }
   .web-search {
     flex-wrap: wrap;
     padding: 8px;
@@ -381,7 +388,6 @@ body.nav-sb-closed .sb-toggle {
   .ws-btn {
     flex: 1 1 40%;
   }
-  /* 表格允许横向滚动 */
   .markdown-section table {
     display: block;
     overflow-x: auto;
@@ -390,7 +396,6 @@ body.nav-sb-closed .sb-toggle {
   }
 }
 
-/* 手机小屏 */
 @media (max-width: 480px) {
   .fab-btn {
     width: 40px;
@@ -405,11 +410,12 @@ body.nav-sb-closed .sb-toggle {
     bottom: 16px;
   }
   .markdown-section {
-    padding: 64px 12px 60px !important;
+    padding: 64px 10px 60px !important;
   }
-  .cat-heading {
-    font-size: 1.2em;
-    margin-top: 32px;
+  .cat-badge, h1.cat-heading {
+    font-size: 1.05em;
+    margin-top: 22px;
+    padding: 6px 14px 6px 26px;
   }
   .markdown-section table tbody td,
   .markdown-section table thead th {
@@ -418,7 +424,6 @@ body.nav-sb-closed .sb-toggle {
   }
 }
 
-/* 超窄屏（<360px）额外保护 */
 @media (max-width: 359px) {
   .ws-engine {
     flex: 1 1 100%;
