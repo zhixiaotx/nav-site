@@ -1,7 +1,7 @@
 /* ============================================
  * 我的导航站 - 自定义样式
  * 覆盖 docsify vue 主题：表格美化 / 统一搜索栏 /
- * 置顶按钮 / 侧边栏折叠 / 分类徽标 / 亮暗主题 / 移动端适配
+ * 置顶按钮 / 侧边栏折叠 / 分类标题(纯文本) / 亮暗主题 / 移动端适配
  * ============================================ */
 
 /* ---------- 主题变量 ---------- */
@@ -17,7 +17,7 @@
   --nav-stripe: #f8fafd;
   --nav-shadow: 0 2px 8px rgba(31, 35, 40, 0.06);
   --nav-sidebar-bg: #fafbfd;
-  --sidebar-width: 200px;
+  --sidebar-width: 180px;
 }
 
 body.nav-dark {
@@ -59,43 +59,48 @@ body {
   background: var(--nav-accent-soft);
 }
 
-/* ---------- 内容区：紧贴侧栏，消除空白 ---------- */
+/* ---------- 内容区：紧贴侧栏，零空白 ---------- */
 .content {
   margin-left: var(--sidebar-width) !important;
   transition: margin-left 0.25s ease;
-  /* 去掉 docsify 默认的额外 padding */
+  /* 强制去掉所有默认内边距和间距 */
   padding: 0 !important;
+  overflow: hidden;
 }
 
-/* ---------- 侧边栏折叠（桌面端） ---------- */
+/* 覆盖 docsify 内部可能加在 .content 上的额外间距 */
+.content > .markdown-section {
+  /* 由下面的 .markdown-section 规则控制 */
+}
+
+/* ---------- 侧边栏折叠 ---------- */
 body.nav-sb-closed .sidebar {
   transform: translateX(-100%);
 }
 body.nav-sb-closed .content {
   margin-left: 0 !important;
 }
-/* 折叠态：搜索栏右移避开左上角折叠图标 */
 body.nav-sb-closed .web-search {
   margin-left: 44px;
 }
 
-/* ---------- 正文区内边距（紧凑） ---------- */
+/* ---------- 正文区内边距（紧凑，紧贴侧栏） ---------- */
 .markdown-section {
   max-width: 1400px !important;
-  padding: 16px 12px 60px !important;
+  padding: 12px 10px 60px !important;
 }
 
 /* ---------- 侧边栏折叠按钮 ---------- */
 .sb-toggle {
   position: fixed;
-  left: 10px;
-  top: 10px;
+  left: 8px;
+  top: 8px;
   z-index: 1002;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border: 1px solid var(--nav-card-border);
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1;
   cursor: pointer;
   background: var(--nav-card-bg);
@@ -113,22 +118,22 @@ body.nav-sb-closed .web-search {
 /* ---------- 统一搜索栏 ---------- */
 .web-search {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
-  padding: 10px 12px;
-  margin: 0 0 18px;
+  padding: 8px 10px;
+  margin: 0 0 14px;
   background: var(--nav-card-bg);
   border: 1px solid var(--nav-card-border);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: var(--nav-shadow);
   flex-wrap: wrap;
 }
 .ws-engine {
   flex: 0 0 auto;
-  min-width: 110px;
-  padding: 8px 10px;
+  min-width: 100px;
+  padding: 7px 8px;
   border: 1px solid var(--nav-card-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--nav-bg);
   color: var(--nav-text);
   font-size: 13px;
@@ -140,10 +145,10 @@ body.nav-sb-closed .web-search {
 }
 .ws-input {
   flex: 1 1 auto;
-  min-width: 120px;
-  padding: 8px 12px;
+  min-width: 100px;
+  padding: 7px 10px;
   border: 1px solid var(--nav-card-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--nav-bg);
   color: var(--nav-text);
   font-size: 14px;
@@ -158,12 +163,12 @@ body.nav-sb-closed .web-search {
 }
 .ws-btn {
   flex: 0 0 auto;
-  padding: 8px 18px;
+  padding: 7px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--nav-accent);
   color: #fff;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
 }
 .ws-btn:hover {
@@ -173,12 +178,12 @@ body.nav-sb-closed .web-search {
 /* 搜索模式切换按钮 */
 .ws-mode {
   flex: 0 0 auto;
-  padding: 8px 12px;
+  padding: 7px 10px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--nav-accent);
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
@@ -189,7 +194,6 @@ body.nav-sb-closed .web-search {
 .ws-mode:hover {
   opacity: 0.88;
 }
-/* 站内模式隐藏引擎下拉 */
 .web-search.mode-site .ws-engine {
   display: none;
 }
@@ -197,13 +201,13 @@ body.nav-sb-closed .web-search {
 /* ---------- 悬浮按钮（置顶 + 主题） ---------- */
 .fab-btn {
   position: fixed;
-  right: 22px;
+  right: 20px;
   z-index: 1000;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border: none;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 19px;
   cursor: pointer;
   background: var(--nav-accent);
   color: #fff;
@@ -216,7 +220,7 @@ body.nav-sb-closed .web-search {
   transform: scale(1.08);
 }
 .top-btn {
-  bottom: 78px;
+  bottom: 76px;
   opacity: 0;
   pointer-events: none;
   font-weight: 700;
@@ -226,56 +230,56 @@ body.nav-sb-closed .web-search {
   pointer-events: auto;
 }
 .theme-toggle {
-  bottom: 22px;
+  bottom: 20px;
 }
 
-/* ---------- 分类标题（醒目胶囊徽标） ---------- */
+/* ========== 分类标题：纯文本样式（不要徽标/填充/圆角） ========== */
 .cat-badge {
-  display: inline-block;
-  margin: 28px 0 12px;
-  padding: 7px 20px 7px 32px;
-  font-size: 1.15em;
+  display: block;
+  margin: 22px 0 8px;
+  padding: 0 0 6px;
+  font-size: 1.2em;
   font-weight: 700;
-  color: #fff;
-  background: linear-gradient(135deg, #4a6cf7, #6d8bff);
-  border-radius: 10px;
-  box-shadow: 0 3px 12px rgba(74, 108, 247, 0.35);
-  position: relative;
-  letter-spacing: 0.5px;
+  color: var(--nav-text);
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--nav-accent);
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
 }
 .cat-badge:first-child {
   margin-top: 4px;
 }
 .cat-badge::before {
-  content: '';
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.85);
-  box-shadow: 0 0 6px rgba(255,255,255,0.5);
+  display: none !important;
 }
 
-/* 也保留对原生 h1.cat-heading 的样式（兜底）——强制 !important 覆盖 docsify 主题 */
+/* 原生 h1.cat-heading 兜底：同样纯文本 */
 h1.cat-heading {
-  display: inline-block !important;
+  display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  margin: 28px 0 12px !important;
-  padding: 7px 20px 7px 32px !important;
-  font-size: 1.15em !important;
+  margin: 22px 0 8px !important;
+  padding: 0 0 6px !important;
+  font-size: 1.2em !important;
   font-weight: 700 !important;
-  color: #fff !important;
-  background: linear-gradient(135deg, #4a6cf7, #6d8bff) !important;
-  border-radius: 10px !important;
-  box-shadow: 0 3px 12px rgba(74, 108, 247, 0.35) !important;
-  position: relative !important;
+  color: var(--nav-text) !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--nav-accent) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  position: static !important;
   height: auto !important;
   overflow: visible !important;
   clip: auto !important;
+  letter-spacing: 0.3px !important;
+  line-height: 1.4 !important;
+}
+h1.cat-heading .anchor {
+  display: none !important;
 }
 
 /* ---------- 表格美化 ---------- */
@@ -283,10 +287,10 @@ h1.cat-heading {
   display: table;
   width: 100%;
   border-collapse: collapse;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--nav-shadow);
-  margin: 0 0 28px;
+  margin: 0 0 24px;
   background: var(--nav-card-bg);
 }
 .markdown-section table thead th {
@@ -295,7 +299,7 @@ h1.cat-heading {
   font-weight: 600;
   font-size: 13px;
   text-align: left;
-  padding: 10px 14px;
+  padding: 9px 12px;
   border-bottom: 2px solid var(--nav-accent);
   white-space: nowrap;
 }
@@ -309,7 +313,7 @@ h1.cat-heading {
   background: var(--nav-accent-soft);
 }
 .markdown-section table tbody td {
-  padding: 9px 14px;
+  padding: 8px 12px;
   font-size: 14px;
   color: var(--nav-text);
   border-bottom: 1px solid var(--nav-card-border);
@@ -371,14 +375,14 @@ h1.cat-heading {
     width: 260px !important;
   }
   .markdown-section {
-    padding: 70px 12px 60px !important;
+    padding: 70px 10px 60px !important;
   }
   .web-search {
     flex-wrap: wrap;
     padding: 8px;
   }
   .ws-engine {
-    min-width: 96px;
+    min-width: 90px;
     flex: 1 1 40%;
   }
   .ws-input {
@@ -398,28 +402,27 @@ h1.cat-heading {
 
 @media (max-width: 480px) {
   .fab-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    right: 14px;
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+    right: 12px;
   }
   .top-btn {
-    bottom: 68px;
+    bottom: 66px;
   }
   .theme-toggle {
-    bottom: 16px;
+    bottom: 14px;
   }
   .markdown-section {
-    padding: 64px 10px 60px !important;
+    padding: 64px 8px 60px !important;
   }
   .cat-badge, h1.cat-heading {
-    font-size: 1.05em;
-    margin-top: 22px;
-    padding: 6px 14px 6px 26px;
+    font-size: 1.08em;
+    margin-top: 18px;
   }
   .markdown-section table tbody td,
   .markdown-section table thead th {
-    padding: 8px 10px;
+    padding: 7px 9px;
     font-size: 13px;
   }
 }
