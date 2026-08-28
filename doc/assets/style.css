@@ -1,0 +1,447 @@
+/* ============================================
+ * 我的导航站 - 自定义样式
+ * 覆盖 docsify vue 主题：表格美化 / 统一搜索栏 /
+ * 置顶按钮 / 侧边栏折叠 / 分类标题(纯文本) / 亮暗主题 / 移动端适配
+ * ============================================ */
+
+/* ---------- 主题变量 ---------- */
+:root {
+  --nav-bg: #f5f7fb;
+  --nav-card-bg: #ffffff;
+  --nav-card-border: #e5e9f2;
+  --nav-text: #1f2328;
+  --nav-muted: #6b7280;
+  --nav-accent: #4a6cf7;
+  --nav-accent-soft: rgba(74, 108, 247, 0.08);
+  --nav-head-bg: #eef1f8;
+  --nav-stripe: #f8fafd;
+  --nav-shadow: 0 2px 8px rgba(31, 35, 40, 0.06);
+  --nav-sidebar-bg: #fafbfd;
+  --sidebar-width: 180px;
+}
+
+body.nav-dark {
+  --nav-bg: #101218;
+  --nav-card-bg: #1a1e29;
+  --nav-card-border: #2a3040;
+  --nav-text: #e6e8ee;
+  --nav-muted: #9aa1b2;
+  --nav-accent: #6d8bff;
+  --nav-accent-soft: rgba(109, 139, 255, 0.12);
+  --nav-head-bg: #232838;
+  --nav-stripe: #161a24;
+  --nav-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --nav-sidebar-bg: #12141c;
+}
+
+/* ---------- 全局背景 ---------- */
+body {
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* ---------- 侧边栏 ---------- */
+.sidebar {
+  background: var(--nav-sidebar-bg);
+  border-right: 1px solid var(--nav-card-border);
+  width: var(--sidebar-width) !important;
+  transition: transform 0.25s ease, width 0.25s ease;
+}
+.sidebar .app-name-link,
+.sidebar ul li a,
+.sidebar ul li a:hover {
+  color: var(--nav-text);
+}
+.sidebar ul li a.active {
+  color: var(--nav-accent);
+  border-right: 2px solid var(--nav-accent);
+  background: var(--nav-accent-soft);
+}
+
+/* ---------- 内容区：紧贴侧栏，零空白 ----------
+ * docsify 的 .content 是 position:absolute; left:300px; overflow-y:scroll 的滚动容器，
+ * 因此用 left 覆盖定位（不要用 margin-left 叠加），并保持可滚动。
+ */
+.content {
+  left: var(--sidebar-width) !important;
+  margin-left: 0 !important;
+  transition: left 0.25s ease;
+  /* 强制去掉所有默认内边距 */
+  padding: 0 !important;
+  /* 保留 docsify 的内部滚动，切勿设 overflow:hidden */
+}
+
+/* ---------- 侧边栏折叠 ---------- */
+body.nav-sb-closed .sidebar {
+  transform: translateX(-100%);
+}
+body.nav-sb-closed .content {
+  left: 0 !important;
+}
+body.nav-sb-closed .web-search {
+  margin-left: 44px;
+}
+
+/* ---------- 正文区内边距（紧凑，紧贴侧栏） ---------- */
+.markdown-section {
+  max-width: 1400px !important;
+  padding: 12px 10px 60px !important;
+}
+
+/* ---------- 侧边栏折叠按钮（侧边栏右侧边缘） ---------- */
+.sb-toggle {
+  position: fixed;
+  left: calc(var(--sidebar-width) + 4px);
+  top: 8px;
+  z-index: 1002;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--nav-card-border);
+  border-radius: 8px;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  background: var(--nav-card-bg);
+  color: var(--nav-text);
+  box-shadow: var(--nav-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.25s ease;
+}
+/* 折叠状态下按钮贴到最左边 */
+body.nav-sb-closed .sb-toggle {
+  left: 8px;
+}
+.sb-toggle:hover {
+  background: var(--nav-accent);
+  color: #fff;
+}
+
+/* 隐藏 docsify 自带的侧边栏切换按钮（避免重复） */
+.sidebar-toggle {
+  display: none !important;
+}
+
+/* ---------- 统一搜索栏 ---------- */
+.web-search {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 10px;
+  margin: 0 0 14px;
+  background: var(--nav-card-bg);
+  border: 1px solid var(--nav-card-border);
+  border-radius: 10px;
+  box-shadow: var(--nav-shadow);
+  flex-wrap: wrap;
+}
+.ws-engine {
+  flex: 0 0 auto;
+  min-width: 100px;
+  padding: 7px 8px;
+  border: 1px solid var(--nav-card-border);
+  border-radius: 6px;
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+}
+.ws-engine:focus {
+  border-color: var(--nav-accent);
+}
+.ws-input {
+  flex: 1 1 auto;
+  min-width: 100px;
+  padding: 7px 10px;
+  border: 1px solid var(--nav-card-border);
+  border-radius: 6px;
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  font-size: 14px;
+  outline: none;
+}
+.ws-input::placeholder {
+  color: var(--nav-muted);
+}
+.ws-input:focus {
+  border-color: var(--nav-accent);
+  box-shadow: 0 0 0 2px var(--nav-accent-soft);
+}
+.ws-btn {
+  flex: 0 0 auto;
+  padding: 7px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--nav-accent);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.ws-btn:hover {
+  opacity: 0.88;
+}
+
+/* 搜索模式切换按钮 */
+.ws-mode {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--nav-accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ws-mode.site {
+  background: var(--nav-muted);
+}
+.ws-mode:hover {
+  opacity: 0.88;
+}
+.web-search.mode-site .ws-engine {
+  display: none;
+}
+
+/* ---------- 悬浮按钮（置顶 + 主题） ---------- */
+.fab-btn {
+  position: fixed;
+  right: 20px;
+  z-index: 1000;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  font-size: 19px;
+  cursor: pointer;
+  background: var(--nav-accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(74, 108, 247, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fab-btn:hover {
+  transform: scale(1.08);
+}
+.top-btn {
+  bottom: 76px;
+  opacity: 0;
+  pointer-events: none;
+  font-weight: 700;
+}
+.top-btn.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.theme-toggle {
+  bottom: 20px;
+}
+
+/* ========== 分类标题：纯文本样式（不要徽标/填充/圆角） ========== */
+.cat-badge {
+  display: block;
+  margin: 22px 0 8px;
+  padding: 0 0 6px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--nav-text);
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--nav-accent);
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+}
+.cat-badge:first-child {
+  margin-top: 4px;
+}
+.cat-badge::before {
+  display: none !important;
+}
+
+/* 原生 h1.cat-heading 兜底：同样纯文本 */
+h1.cat-heading {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 22px 0 8px !important;
+  padding: 0 0 6px !important;
+  font-size: 1.2em !important;
+  font-weight: 700 !important;
+  color: var(--nav-text) !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--nav-accent) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  position: static !important;
+  height: auto !important;
+  overflow: visible !important;
+  clip: auto !important;
+  letter-spacing: 0.3px !important;
+  line-height: 1.4 !important;
+}
+h1.cat-heading .anchor {
+  display: none !important;
+}
+
+/* ---------- 表格美化 ---------- */
+.markdown-section table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--nav-shadow);
+  margin: 0 0 24px;
+  background: var(--nav-card-bg);
+}
+.markdown-section table thead th {
+  background: var(--nav-head-bg);
+  color: var(--nav-text);
+  font-weight: 600;
+  font-size: 13px;
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 2px solid var(--nav-accent);
+  white-space: nowrap;
+}
+.markdown-section table tbody tr {
+  transition: background 0.15s ease;
+}
+.markdown-section table tbody tr:nth-child(even) {
+  background: var(--nav-stripe);
+}
+.markdown-section table tbody tr:hover {
+  background: var(--nav-accent-soft);
+}
+.markdown-section table tbody td {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--nav-text);
+  border-bottom: 1px solid var(--nav-card-border);
+  vertical-align: middle;
+}
+.markdown-section table tbody tr:last-child td {
+  border-bottom: none;
+}
+.markdown-section table tbody td:first-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.markdown-section table tbody td a {
+  color: var(--nav-accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+.markdown-section table tbody td a:hover {
+  text-decoration: underline;
+}
+.markdown-section table tbody td:last-child {
+  color: var(--nav-muted);
+  font-size: 13px;
+}
+
+/* ---------- 搜索框主题适配（docsify 兼容） ---------- */
+.search input {
+  background: var(--nav-card-bg) !important;
+  color: var(--nav-text) !important;
+  border: 1px solid var(--nav-card-border) !important;
+  border-radius: 8px !important;
+}
+.search .search-keyword {
+  color: var(--nav-accent) !important;
+}
+.search p {
+  color: var(--nav-text) !important;
+}
+
+/* ============================================
+ * 移动端适配
+ * ============================================ */
+
+@media (max-width: 768px) {
+  /* 移动端：折叠按钮固定在左上角 */
+  .sb-toggle {
+    display: flex !important;
+    left: 8px;
+    top: 8px;
+  }
+  .sidebar-toggle {
+    display: none !important;
+  }
+  body.nav-sb-closed .content,
+  .content {
+    left: 0 !important;
+    margin-left: 0 !important;
+  }
+  .sidebar {
+    width: 260px !important;
+  }
+  .markdown-section {
+    padding: 70px 10px 60px !important;
+  }
+  .web-search {
+    flex-wrap: wrap;
+    padding: 8px;
+  }
+  .ws-engine {
+    min-width: 90px;
+    flex: 1 1 40%;
+  }
+  .ws-input {
+    flex: 1 1 100%;
+    order: 3;
+  }
+  .ws-btn {
+    flex: 1 1 40%;
+  }
+  .markdown-section table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .fab-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+    right: 12px;
+  }
+  .top-btn {
+    bottom: 66px;
+  }
+  .theme-toggle {
+    bottom: 14px;
+  }
+  .markdown-section {
+    padding: 64px 8px 60px !important;
+  }
+  .cat-badge, h1.cat-heading {
+    font-size: 1.08em;
+    margin-top: 18px;
+  }
+  .markdown-section table tbody td,
+  .markdown-section table thead th {
+    padding: 7px 9px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 359px) {
+  .ws-engine {
+    flex: 1 1 100%;
+  }
+  .ws-btn {
+    flex: 1 1 100%;
+  }
+}
