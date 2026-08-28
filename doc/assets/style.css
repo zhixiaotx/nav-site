@@ -89,10 +89,10 @@ body.nav-sb-closed .web-search {
   padding: 12px 10px 60px !important;
 }
 
-/* ---------- 侧边栏折叠按钮 ---------- */
+/* ---------- 侧边栏折叠按钮（侧边栏右侧边缘） ---------- */
 .sb-toggle {
   position: fixed;
-  left: 8px;
+  left: calc(var(--sidebar-width) + 4px);
   top: 8px;
   z-index: 1002;
   width: 32px;
@@ -108,10 +108,20 @@ body.nav-sb-closed .web-search {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: left 0.25s ease;
+}
+/* 折叠状态下按钮贴到最左边 */
+body.nav-sb-closed .sb-toggle {
+  left: 8px;
 }
 .sb-toggle:hover {
   background: var(--nav-accent);
   color: #fff;
+}
+
+/* 隐藏 docsify 自带的侧边栏切换按钮（避免重复） */
+.sidebar-toggle {
+  display: none !important;
 }
 
 /* ---------- 统一搜索栏 ---------- */
@@ -357,14 +367,14 @@ h1.cat-heading .anchor {
  * ============================================ */
 
 @media (max-width: 768px) {
+  /* 移动端：折叠按钮固定在左上角 */
   .sb-toggle {
-    display: none;
+    display: flex !important;
+    left: 8px;
+    top: 8px;
   }
   .sidebar-toggle {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    z-index: 1002;
+    display: none !important;
   }
   body.nav-sb-closed .content,
   .content {
