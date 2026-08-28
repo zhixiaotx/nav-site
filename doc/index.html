@@ -67,11 +67,12 @@
           '<p style="font-size:12px;color:#999">若持续出现，请在 GitHub 提交 Issue 并附上分类名称。</p>' +
           '</div>';
       }
-      // 首屏看门狗
-      setTimeout(function () { if (isStuck()) showFallback(); }, 8000);
+      // 首屏看门狗：放宽到 25s，避免国内访问 GitHub Pages 偶发慢速被误判为失败
+      // （docsify 一旦渲染会覆盖 #app，回退提示自动消失，无需手动处理）
+      setTimeout(function () { if (isStuck()) showFallback(); }, 25000);
       // 路由切换看门狗：每次切换后若长时间未渲染出正文，给出提示
       window.addEventListener('hashchange', function () {
-        setTimeout(function () { if (isStuck()) showFallback(); }, 8000);
+        setTimeout(function () { if (isStuck()) showFallback(); }, 25000);
       });
     })();
   </script>
