@@ -41,5 +41,35 @@
   <!-- docsify 核心（本地化） -->
   <script src="assets/vendor/docsify.min.js"></script>
   <!-- 站内/站外统一搜索栏由 assets/nav.js 注入，不再加载 docsify 自带搜索插件 -->
+
+  <!-- 加载看门狗：万一某页渲染卡死，绝不永久停在“加载中”，给出回退提示 -->
+  <script>
+    (function () {
+      function isStuck() {
+        var app = document.getElementById('app');
+        if (!app) return false;
+        // 初始占位未被替换：#app 仍是“加载中…”且没有渲染出的正文
+        return app.textContent.indexOf('加载中') !== -1 &&
+               !app.querySelector('article.markdown-section');
+      }
+      function showFallback() {
+        var app = document.getElementById('app');
+        if (!app || app.querySelector('.load-fallback')) return;
+        app.innerHTML =
+          '<div class="load-fallback" style="padding:48px;text-align:center;color:#666">' +
+          '<h2 style="color:#e0533d">⚠️ 页面加载失败</h2>' +
+          '<p>该导航分类暂时无法渲染（可能是文件内容异常或网络问题）。</p>' +
+          '<p><a href="#/" style="color:#4a6cf7;font-weight:700">← 返回首页</a></p>' +
+          '<p style="font-size:12px;color:#999">若持续出现，请在 GitHub 提交 Issue 并附上分类名称。</p>' +
+          '</div>';
+      }
+      // 首屏看门狗
+      setTimeout(function () { if (isStuck()) showFallback(); }, 8000);
+      // 路由切换看门狗：每次切换后若长时间未渲染出正文，给出提示
+      window.addEventListener('hashchange', function () {
+        setTimeout(function () { if (isStuck()) showFallback(); }, 8000);
+      });
+    })();
+  </script>
 </body>
 </html>
