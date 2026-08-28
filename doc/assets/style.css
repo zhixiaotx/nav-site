@@ -59,18 +59,17 @@ body {
   background: var(--nav-accent-soft);
 }
 
-/* ---------- 内容区：紧贴侧栏，零空白 ---------- */
+/* ---------- 内容区：紧贴侧栏，零空白 ----------
+ * docsify 的 .content 是 position:absolute; left:300px; overflow-y:scroll 的滚动容器，
+ * 因此用 left 覆盖定位（不要用 margin-left 叠加），并保持可滚动。
+ */
 .content {
-  margin-left: var(--sidebar-width) !important;
-  transition: margin-left 0.25s ease;
-  /* 强制去掉所有默认内边距和间距 */
+  left: var(--sidebar-width) !important;
+  margin-left: 0 !important;
+  transition: left 0.25s ease;
+  /* 强制去掉所有默认内边距 */
   padding: 0 !important;
-  overflow: hidden;
-}
-
-/* 覆盖 docsify 内部可能加在 .content 上的额外间距 */
-.content > .markdown-section {
-  /* 由下面的 .markdown-section 规则控制 */
+  /* 保留 docsify 的内部滚动，切勿设 overflow:hidden */
 }
 
 /* ---------- 侧边栏折叠 ---------- */
@@ -78,7 +77,7 @@ body.nav-sb-closed .sidebar {
   transform: translateX(-100%);
 }
 body.nav-sb-closed .content {
-  margin-left: 0 !important;
+  left: 0 !important;
 }
 body.nav-sb-closed .web-search {
   margin-left: 44px;
@@ -369,6 +368,7 @@ h1.cat-heading .anchor {
   }
   body.nav-sb-closed .content,
   .content {
+    left: 0 !important;
     margin-left: 0 !important;
   }
   .sidebar {
