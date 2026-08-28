@@ -17,7 +17,7 @@
   --nav-stripe: #f8fafd;
   --nav-shadow: 0 2px 8px rgba(31, 35, 40, 0.06);
   --nav-sidebar-bg: #fafbfd;
-  --sidebar-width: 180px;
+  --sidebar-width: 220px;
 }
 
 body.nav-dark {
@@ -130,7 +130,7 @@ body.nav-sb-closed .sb-toggle {
   gap: 6px;
   align-items: center;
   padding: 8px 10px;
-  margin: 0 0 14px;
+  margin: 12px 10px 14px;
   background: var(--nav-card-bg);
   border: 1px solid var(--nav-card-border);
   border-radius: 10px;
@@ -242,6 +242,19 @@ body.nav-sb-closed .sb-toggle {
   bottom: 20px;
 }
 
+
+/* ---------- 分类标题兑底：vue 主题会隐藏正文首个 h1（当页面标题），此处强制显示 ---------- */
+.markdown-section > h1 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 4px 0 14px !important;
+  font-size: 1.4em !important;
+  font-weight: 700 !important;
+  color: var(--nav-text) !important;
+  border-bottom: 2px solid var(--nav-accent) !important;
+  padding-bottom: 6px !important;
+}
 /* ========== 分类标题：纯文本样式（不要徽标/填充/圆角） ========== */
 .cat-badge {
   display: block;
