@@ -1,6 +1,6 @@
 # 🚀 我的导航站
 
-> 一个汇聚 **56 个精选分类** 的纯静态导航站。左侧挑分类，右侧看链接；顶部搜索框一键检索。
+> 一个汇聚 **57 个精选分类** 的纯静态导航站。左侧挑分类，右侧看链接；顶部搜索框一键检索。
 
 ## 🧭 三步上手
 
@@ -24,15 +24,15 @@
 | [📄 华缘社](ziyuan/nav22.md) | [📄 墨韵诗台](ziyuan/nav23.md) | [📄 大学生搬砖之家](ziyuan/nav24.md) |
 | [📄 大学生福地](ziyuan/nav25.md) | [📄 天炽的导航](ziyuan/nav26.md) | [📄 妖怪青年](ziyuan/nav27.md) |
 | [📄 寒江不寒](ziyuan/nav28.md) | [📄 小七导航](ziyuan/nav29.md) | [📄 小帅同学](ziyuan/nav30.md) |
-| [📄 小白の学习世界](ziyuan/nav31.md) | [📄 小白の起始页hy123](ziyuan/hy123.md) | [📄 小马建工导航](ziyuan/nav32.md) |
-| [📄 心明的导航](ziyuan/nav33.md) | [📄 旅游的企鹅导航小站](ziyuan/nav34.md) | [📄 晓美焰](ziyuan/nav35.md) |
-| [📄 李先生的小蜗牛🐌](ziyuan/nav36.md) | [📄 杠叔](ziyuan/nav37.md) | [📄 果壳er](ziyuan/er.md) |
-| [📄 梦蝶舞影疾风影](ziyuan/nav39.md) | [📄 沐天阁](ziyuan/nav40.md) | [📄 炳的导航](ziyuan/nav41.md) |
-| [📄 盛夏的导航](ziyuan/nav42.md) | [📄 知云阁导航](ziyuan/nav43.md) | [📄 繁桦驿站](ziyuan/nav44.md) |
-| [📄 网盘搜索🔍](ziyuan/nav45.md) | [📄 资源工具大全](ziyuan/nav46.md) | [📄 超实用资源分享](ziyuan/nav47.md) |
-| [📄 道友明导航](ziyuan/nav48.md) | [📄 银河导航](ziyuan/nav49.md) | [📄 阿木科技导航](ziyuan/nav50.md) |
-| [📄 阿锐导航](ziyuan/nav51.md) | [📄 雨天导航](ziyuan/nav52.md) | [📄 青柠柚子](ziyuan/nav53.md) |
-| [📄 麻瓜的秘密补习班](ziyuan/nav54.md) | [📄 黑灰若山](ziyuan/nav55.md) |  |
+| [📄 小白の学习世界](ziyuan/nav31.md) | [📄 小白の起始页huangyong](ziyuan/huangyong.md) | [📄 小白の起始页hy123](ziyuan/hy123.md) |
+| [📄 小马建工导航](ziyuan/nav32.md) | [📄 心明的导航](ziyuan/nav33.md) | [📄 旅游的企鹅导航小站](ziyuan/nav34.md) |
+| [📄 晓美焰](ziyuan/nav35.md) | [📄 李先生的小蜗牛🐌](ziyuan/nav36.md) | [📄 杠叔](ziyuan/nav37.md) |
+| [📄 果壳er](ziyuan/er.md) | [📄 梦蝶舞影疾风影](ziyuan/nav39.md) | [📄 沐天阁](ziyuan/nav40.md) |
+| [📄 炳的导航](ziyuan/nav41.md) | [📄 盛夏的导航](ziyuan/nav42.md) | [📄 知云阁导航](ziyuan/nav43.md) |
+| [📄 繁桦驿站](ziyuan/nav44.md) | [📄 网盘搜索🔍](ziyuan/nav45.md) | [📄 资源工具大全](ziyuan/nav46.md) |
+| [📄 超实用资源分享](ziyuan/nav47.md) | [📄 道友明导航](ziyuan/nav48.md) | [📄 银河导航](ziyuan/nav49.md) |
+| [📄 阿木科技导航](ziyuan/nav50.md) | [📄 阿锐导航](ziyuan/nav51.md) | [📄 雨天导航](ziyuan/nav52.md) |
+| [📄 青柠柚子](ziyuan/nav53.md) | [📄 麻瓜的秘密补习班](ziyuan/nav54.md) | [📄 黑灰若山](ziyuan/nav55.md) |
 
 ## 💡 关于本站
 
