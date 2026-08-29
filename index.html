@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>🚀 我的导航站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <meta name="description" content="我的导航站 - 聚合常用网站、工具、资源导航" />
+
+  <!-- 主题样式（CDN，参考 zhixiaotx/blog 的可达配置） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div id="app">加载中…</div>
+
+  <script>
+    window.$docsify = {
+      name: '🚀 我的导航站',
+      nameLink: '#/',
+      repo: '',
+      // 侧边栏导航（_sidebar.md 中的 55 个分类）
+      loadSidebar: true,
+      subMaxLevel: 2,
+      maxLevel: 4,
+      auto2top: true,
+      loadNavbar: false,
+      coverpage: false,
+      // 相对链接始终基于站点根解析，避免从子目录页再点链接时路径叠加
+      relativePath: false,
+      // 站内搜索（docsify 官方插件，稳定可靠）
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: '搜索分类 / 站点',
+        noData: '找不到结果',
+        depth: 4
+      },
+      // 外链新窗口打开
+      externalLinkTarget: '_blank',
+      externalLinkRel: 'noopener',
+      // 找不到页面时渲染 _404.md（而不是永久停在加载占位）
+      notFoundPage: true,
+      // 插件万一抛错也不要中断正文渲染
+      catchPluginErrors: true
+    };
+  </script>
+
+  <!-- Docsify v4（CDN，已验证国内可达） -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- 官方搜索插件（站内搜索） -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <!-- 站内/站外搜索 + 主题切换 + 一键置顶（干净插件，参考 zhixiaotx/blog 写法） -->
+  <script src="assets/nav.js"></script>
+</body>
+</html>
