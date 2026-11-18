@@ -765,6 +765,7 @@
 | AI API 公益站 | https://github.com/1sh1ro/ai-api-zhongzhuan | |
 | 最全API中转站导航 | https://www.zuiquanapi.com/ | |
 | AI中转站实测推荐 | https://www.hvoyai.com/leaderboard/ | |
+| Folkbench 中转站榜单 | https://folkbench.com/?utm_source=github&utm_medium=awesome&utm_campaign=nav-site | AI API 中转站榜单与实时检测；排序遵循站点规则（含合作档位和运营加权），部分数据为展示样本 |
 | AI脉搏中转站 | https://aimeot.com/ | 找到更稳定的 AI 中转站 |
 | 在线 AI 中转站 | https://www.okkmax.com/ | 发现好用的 AI 中转站 |
 | AI比价雷达 | https://priceai.cc/api-transit | API 中转站价格榜 |
